@@ -1,37 +1,39 @@
 # Question
-We received a PCAP file from an admin who suspects an attacker exfiltrated sensitive data. Can you analyze the PCAP file and uncover what was stolen?
+Uh.. Oh.. Help me, I just browsing funny cats memes, when I click download cute cat picture, the file that been download seems little bit wierd. I accidently run the file making my files shredded. Ughh now I hate cat meowing at me.
 
 # Tools
-- Wireshark
-- Cyberchef
-- Python script for allign the file
-- hashcat
+-Cyberchef
+-Python script
 
 # Description
-This challenge is related with NTLMSSP and SMB.Finf the key of NTLM. Need some knowledge on how to crack NTLM hash
+This challenge is related with file image manipulation. Givne a file name flag.shreded, but we cant see the image. Need to investiagte further what cause this issue
 
 # Solution
-1. Read the pcap and filter for NTLMSSP.
+1.Upload the file into cyberchef. It wil interpret the hexadecimal of the image into human-readable
 2. And will see this:
    
-   ![image](https://github.com/user-attachments/assets/0033c437-9d5a-4622-a1c0-bfe9ac84798a)
+![image](https://github.com/user-attachments/assets/c35de567-1ad0-4d8d-844a-e2f44af2ba8c)
 
-4. Then crack the NTLM Hash, this is the information needed to crack the hash:
-   ![image](https://github.com/user-attachments/assets/e7ff28b9-3e7d-49ec-a207-12fcf60c5dc2)
+There are a lot of "meow" words between data. The value in hexadecimal of meow is "6d 65 6f 77".
 
-then arrange in this sequence:
-user::domain:challenge:HMAC-MD5:NTLMV2_Response
+4. Use python script to remove the unwanted "meow" word insisde teh data:
 
-6. Then proceed to crack the hash by issuing this command:
+with open(r"D:\Users\Asus Zephyrus G15\Documents\updated_file.jpeg", 'rb') as f:
+    data = f.read()
 
-hashcat -a0 -m5600 wgmy.txt /usr/share/wordlists/rockyou.txt
+# Remove the sequence `6d 65 6f 77`
+updated_data = data.replace(b'\x6d\x65\x6f\x77', b'')
 
-And will get the password :
+with open(r"finally_yes.jpeg", 'wb') as f:
+    f.write(updated_data)
 
-![image](https://github.com/user-attachments/assets/515c3c83-0392-4b26-b01d-9abcfa2fcdbc)
 
 
-password<3
-   
-8. 
+6. Finally we can see the image, and the flag is inside the image:
+
+![image](https://github.com/user-attachments/assets/8a12cfdd-2cfc-4c47-970d-dcac65ebfe41)
+
+WGMY{4a4be40c96ac6314e91d93f38043a634}
+
+
 
