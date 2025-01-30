@@ -33,4 +33,28 @@ And will get the password :
 
 password<3
    
-8. 
+8. Decrypt the smb packet by using the password that we have cracked.
+
+Wireshark:
+Edot -> Preferences -> ntlmssp. Thne enter the password (password<3)
+
+![image](https://github.com/user-attachments/assets/afe79a61-858d-44ed-8450-9782f3a6788d)
+
+Now we can see the content or the smb object:
+
+Go to file -> exports object -> SMB
+![image](https://github.com/user-attachments/assets/026e7ec8-8ba0-4e32-9f72-80c71b6b0ad2)
+
+10. Open all the file, and one of the file show this:
+
+    ![image](https://github.com/user-attachments/assets/0d3e9127-ee68-47ec-8774-b9826392a034)
+
+    These were the instructions to restoring the minidump signature and extract the secret. In order to use scripts/restore_signature, you will need to clone the NanoDump repository and install pypykatz.
+
+12. Run the repair script:
+python3 -m pypykatz lsa minidump 20241225_1939.log
+
+and we will get the flag:
+
+![image](https://github.com/user-attachments/assets/a58d44c6-5bea-4461-9c5c-56c94f842b46)
+
